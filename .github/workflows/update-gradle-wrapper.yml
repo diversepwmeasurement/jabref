@@ -1,24 +1,22 @@
-name: Update Gradle Wrapper
-
-on:
-  schedule:
-    - cron: "0 5 * * 1"
-  workflow_dispatch:
-
 jobs:
   update-gradle-wrapper:
-    runs-on: ubuntu-latest
-
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 21.0.2
-          distribution: 'temurin'
-
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
-        with:
-          labels: dependencies
-          repo-token: ${{ secrets.GH_TOKEN_UPDATE_GRADLE_WRAPPER }}
+    - continue-on-error: true
+      uses: actions/checkout@v4
+    - continue-on-error: true
+      name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 21.0.2
+    - continue-on-error: true
+      name: Update Gradle Wrapper
+      uses: gradle-update/update-gradle-wrapper-action@v1
+      with:
+        labels: dependencies
+        repo-token: ${{ secrets.GH_TOKEN_UPDATE_GRADLE_WRAPPER }}
+name: Update Gradle Wrapper
+on:
+  repository_dispatch:
+    types: trigger-ga___update-gradle-wrapper.yml
